@@ -29,7 +29,7 @@ const defaultRecipe: Recipe = {
 
 function App() {
   const [viewMode, setViewMode] = useState<Mode>("default");
-  const [stackView, setStackView] = useState<Mode[]>([]);
+  const [, setStackView] = useState<Mode[]>([]);
   const [recipe, setRecipe] = useState<Recipe[]>([]);
   const [current, setCurrent] = useState<Recipe | null>(null);
   const [currentIngredient, setCurrentIngredient] = useState<Ingredient | null>(null);
@@ -125,7 +125,7 @@ function App() {
     setTimeout(() => setMessage(null), 2000);
   };
 
-  const handleChange = (name: keyof Recipe, value: any) => {
+  const handleChange = (name: keyof Recipe, value: unknown) => {
     setCurrent(prev => ({
       ...(prev ?? defaultRecipe),
       [name]: value
@@ -240,7 +240,7 @@ function App() {
             ))}
             <div className='button' onClick={() => {
               setCurrentIngredient(viewMode === "ingredients" ? { name: "", value: 0 } : null);
-              setCurrentNote(viewMode === "notes" ? "" : null);
+              setCurrentNote(viewMode === "notes" ? "" : "");
               changeView("form");
             }}>
               <img src="./create.png" alt="create" />
