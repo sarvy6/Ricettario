@@ -151,8 +151,8 @@ function App() {
             <div className='button' onClick={() => { setCurrent(defaultRecipe); changeView("create"); }}>
               <img src="./create.png" alt="create" />
             </div>
-            <div className='button'><img src="./import.png" alt="import" /></div>
-            <div className='button'><img src="./export.png" alt="export" /></div>
+            <div className='button' onClick={() => changeView("import")}><img src="./import.png" alt="import" /></div>
+            <div className='button' onClick={() => changeView("export")}><img src="./export.png" alt="export" /></div>
           </div>
           <div className='content'>
             {recipe.map((i, index) => (
@@ -227,15 +227,15 @@ function App() {
           </div>
           <div className='main-container'>
             {viewMode === "ingredients" && current.ingredients.map((i, idx) => (
-              <div className='card' key={idx}>
+              <div className='card' key={idx} onClick={() => { setCurrentIngredient(i); changeView("form"); }}>
                 <div>{`${i.name}: ${i.value}g`}</div>
-                <div className='button'><img src="./delete.png" alt="delete" /></div>
+                <div className='button' onClick={(e) =>{ e.stopPropagation(); setCurrent({...current, ingredients: current.ingredients.filter(j => j != i)})}}><img src="./delete.png" alt="delete" /></div>
               </div>
             ))}
             {viewMode === "notes" && current.notes.map((n, idx) => (
-              <div className='card' key={idx}>
+              <div className='card' key={idx} onClick={() => { setCurrentNote(n); changeView("form"); }}>
                 <div>{n}</div>
-                <div className='button'><img src="./delete.png" alt="delete" /></div>
+                <div className='button'onClick={(e) => {e.stopPropagation(); setCurrent({...current, notes: current.notes.filter(j => j != n)})}}><img src="./delete.png" alt="delete" /></div>
               </div>
             ))}
             <div className='button' onClick={() => {
@@ -273,6 +273,62 @@ function App() {
           </div>
         </div>
       )}
+      {viewMode === "import" && (
+  <div className='import-container'>
+    <div className='title'>Importa Ricette</div>
+
+    <input
+      type="file"
+      id="file-input"
+      accept=".json"
+      onChange={(e) => {
+        const file = e.target.files?.[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = (event) => {
+            try {
+              const data = JSON.parse(event.target?.result as string);
+              setRecipe(data);
+              localStorage.setItem("recipes", JSON.stringify(data));
+              showMessage("success", "Ricette importate con successo");
+            } catch {
+              showMessage("error", "Errore durante l'importazione");
+            }
+          };
+          reader.readAsText(file);
+        }
+      }}
+      style={{ display: "none" }}
+    />
+    <label htmlFor="file-input" className="custom-button">Seleziona file JSON</label>
+
+    <div className='image-button' onClick={() => changeView()}>
+      <img src="./cancel.png" alt="cancel" />
+    </div>
+  </div>
+)}
+
+{viewMode === "export" && (
+  <div className='export-container'>
+    <div className='title'>Esporta Ricette</div>
+
+    <button className="custom-button" onClick={() => {
+      const data = JSON.stringify(recipe);
+      const blob = new Blob([data], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'recipes.json';
+      a.click();
+      URL.revokeObjectURL(url);
+    }}>Download JSON</button>
+
+    <div className='image-button' onClick={() => changeView()}>
+      <img src="./cancel.png" alt="cancel" />
+    </div>
+  </div>
+)}
+
     </div>
   );
 }

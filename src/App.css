@@ -887,3 +887,84 @@
   transform: scale(1.05);
   filter: brightness(1.1);
 }
+.cookbook-container > .import-container,
+.cookbook-container > .export-container {
+  background-color: #1e1e1e;
+  padding: 2rem;
+  border-radius: 20px;
+  box-shadow: 0 0 20px rgba(191, 167, 95, 0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  animation: fadeSlideIn 0.3s ease;
+}
+
+.cookbook-container > .import-container .title,
+.cookbook-container > .export-container .title {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #bfa75f;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.cookbook-container .custom-button {
+  background-color: black;
+  color: white;
+  border: 2px solid #bfa75f;
+  border-radius: 10px;
+  padding: 0.8rem 1.6rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 10px rgba(191, 167, 95, 0.2);
+  width: 100%;
+  max-width: 260px;
+  text-align: center;
+}
+
+.cookbook-container .custom-button:hover {
+  background-color: #111;
+  transform: scale(1.03);
+  box-shadow: 0 0 16px rgba(191, 167, 95, 0.4);
+}
+
+/* Pulsante con immagine */
+.cookbook-container .image-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  border: 2px solid #bfa75f;
+  border-radius: 12px;
+  padding: 0.3rem 1.2rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  height: 42px;
+  width: 180px;
+}
+
+.cookbook-container .image-button img {
+  height: 24px;
+  filter: brightness(0) invert(1);
+}
+
+.cookbook-container .image-button:hover {
+  background-color: #2c2c2c;
+  transform: scale(1.02);
+  box-shadow: 0 0 10px rgba(191, 167, 95, 0.4);
+}
+
+/* Animazione container */
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
